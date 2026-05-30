@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ayush Carpenter - Software Engineer Portfolio
 
-## Getting Started
+This is a premium, high-performance portfolio built for Ayush Carpenter, designed with a "Cinematic Cyber-Minimalist" aesthetic.
 
-First, run the development server:
+## Technology Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: Lucide React & Custom SVGs
+- **Typography**: Geist (Primary), JetBrains Mono (Labels/Technical text)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture & Design
+This application utilizes a strict component-based architecture:
+- `src/components/layout/`: Global structure (Navbar, SideNav, Footer).
+- `src/components/sections/`: Modular page sections mirroring the resume content.
+- `src/components/ui/`: Reusable, styled base components (`Button`, `GlassPanel`, `SectionHeading`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The design language emphasizes a pure black canvas (`#05070A`) with deep "Bent" glassmorphism (`backdrop-blur-3xl`, 0.5px subtle white borders) and ambient mesh gradients.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup Instructions
 
-## Learn More
+1. Ensure you have Node.js 20+ installed.
+2. Clone this repository or navigate to the project root.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push this repository to GitHub.
+2. Go to Vercel and import the repository.
+3. Vercel will automatically detect Next.js and build your app seamlessly. No extra configuration required.
 
-## Deploy on Vercel
+## SEO & Accessibility
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This portfolio is built with semantic HTML tags, accessible color contrast ratios on text, and responsive typography out of the box. Metadata is configured in `src/app/layout.tsx` for optimal search engine crawling.
