@@ -52,6 +52,29 @@
 
   /* --- Section rhythm (design spec: stack-lg 120px) --- */
   --spacing-section: 7.5rem;
+
+  /* --- Marquee: the track holds two identical copies, so shifting by
+         exactly half its width loops seamlessly. --- */
+  --animate-marquee: marquee 50s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 50s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 /* ==================================================================
@@ -197,5 +220,12 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Stop the marquee outright rather than letting the rule above snap it to
+     its end frame, which would park the track half off-screen. */
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
   }
 }
