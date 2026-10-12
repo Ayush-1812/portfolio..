@@ -1,46 +1,102 @@
-# Ayush Carpenter - Software Engineer Portfolio
+# Ayush Carpenter — Portfolio
 
-This is a premium, high-performance portfolio built for Ayush Carpenter, designed with a "Cinematic Cyber-Minimalist" aesthetic.
+Personal portfolio for Ayush Carpenter, a Computer Science undergraduate at IIIT Kota.
+Dark-only, single page, built around a "Cinematic Cyber-Minimalist" design language.
 
-## Technology Stack
+**Stack:** Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Framer Motion · hand-written WebGL
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Language**: TypeScript
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: Lucide React & Custom SVGs
-- **Typography**: Geist (Primary), JetBrains Mono (Labels/Technical text)
+## Getting started
 
-## Architecture & Design
-This application utilizes a strict component-based architecture:
-- `src/components/layout/`: Global structure (Navbar, SideNav, Footer).
-- `src/components/sections/`: Modular page sections mirroring the resume content.
-- `src/components/ui/`: Reusable, styled base components (`Button`, `GlassPanel`, `SectionHeading`).
+```bash
+npm install
+cp .env.example .env.local   # then fill in WEB3FORMS_KEY
+npm run dev
+```
 
-The design language emphasizes a pure black canvas (`#05070A`) with deep "Bent" glassmorphism (`backdrop-blur-3xl`, 0.5px subtle white borders) and ambient mesh gradients.
+Open http://localhost:3000.
 
-## Setup Instructions
+| Script          | Purpose                          |
+| --------------- | -------------------------------- |
+| `npm run dev`   | Dev server (Turbopack)           |
+| `npm run build` | Production build                 |
+| `npm start`     | Serve the production build       |
+| `npm run lint`  | ESLint                           |
 
-1. Ensure you have Node.js 20+ installed.
-2. Clone this repository or navigate to the project root.
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+## Environment
 
-## Deployment
+| Variable         | Required | Notes                                                                 |
+| ---------------- | -------- | --------------------------------------------------------------------- |
+| `WEB3FORMS_KEY`  | Yes      | Access key for the contact form. Read **server-side only**, inside the Server Action — deliberately not `NEXT_PUBLIC_`, so it never ships to the browser. |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new).
+Without it the contact form renders and validates normally but returns a
+message asking the visitor to email directly, rather than failing silently.
+**Remember to add this variable in your Vercel project settings** — `.env.local`
+is git-ignored and does not deploy.
 
-1. Push this repository to GitHub.
-2. Go to Vercel and import the repository.
-3. Vercel will automatically detect Next.js and build your app seamlessly. No extra configuration required.
+## Architecture
 
-## SEO & Accessibility
+```
+src/
+├── app/
+│   ├── actions/contact.ts     Server Action: validation, honeypot, Web3Forms
+│   ├── layout.tsx             Fonts, metadata, JSON-LD Person schema, skip link
+│   ├── page.tsx               Section composition
+│   ├── globals.css            Design tokens (@theme) + utilities
+│   ├── opengraph-image.tsx    Generated 1200×630 link preview
+│   ├── icon.tsx               Generated monogram favicon
+│   ├── sitemap.ts / robots.ts
+├── content/site.ts            ← all copy and data live here
+├── components/
+│   ├── layout/                Navbar, SideRail, Footer
+│   ├── sections/              Hero, About, Projects, Skills, Experience, Contact
+│   └── ui/                    Button, GlassPanel, SectionHeading, Reveal,
+│                              Tilt3D, ParticleKnot, HeroVisual, Icons
+└── hooks/useEnvironment.ts    Media-query / capability gates
+```
 
-This portfolio is built with semantic HTML tags, accessible color contrast ratios on text, and responsive typography out of the box. Metadata is configured in `src/app/layout.tsx` for optimal search engine crawling.
+### Content is data, not markup
+
+Every fact on the page — projects, skills, education, links, metrics — comes from
+[`src/content/site.ts`](src/content/site.ts). Components only render it.
+
+That file carries a provenance rule: a value may only appear there if it comes from
+`public/Ayush_Carpenter_ResumeSDE.pdf` or from the linked repository's own README.
+Nothing is estimated or inferred. Keep it that way — to update the site, edit that
+one file.
+
+### Design tokens
+
+Colours, type, radii and motion curves are declared once in the `@theme` block of
+[`globals.css`](src/app/globals.css) and consumed as ordinary Tailwind utilities
+(`bg-surface`, `text-ink-muted`, `border-hairline`). Components contain no hex
+literals, so the palette can be changed in one place.
+
+### 3D and motion
+
+Three layers, each degrading independently:
+
+1. **`ParticleKnot`** — a (2,3) torus knot drawn as a GPU particle cloud in
+   hand-written WebGL (no three.js, no added dependency weight). Perspective,
+   rotation and depth attenuation happen in the shader.
+2. **`Tilt3D`** — pointer-driven perspective tilt with a tracking specular glare.
+3. **`Reveal`** — scroll-triggered entrances, observed once.
+
+The WebGL hero loads only after the browser is idle, and only when the visitor has
+a fine pointer, a viewport ≥ 768px, no `prefers-reduced-motion`, and no Data Saver.
+It pauses when scrolled offscreen or when the tab is hidden, and releases its
+context on unmount. `Tilt3D` and `Reveal` return plain wrappers when motion is
+reduced, so no content depends on an animation that may never run.
+
+## Accessibility
+
+Skip link, labelled form fields with `aria-invalid`/`aria-describedby`, a polite
+live region for submission status, `aria-label` on every icon-only control, a single
+consistent `:focus-visible` ring, and a full mobile menu with Escape-to-close and
+scroll lock. Hover states are CSS, so they apply on keyboard focus too.
+
+## Deploying
+
+Push to GitHub and import the repository on Vercel — the framework is detected
+automatically. Set `WEB3FORMS_KEY` in project settings, and update
+`profile.siteUrl` in `src/content/site.ts` to the final domain so `metadataBase`,
+the sitemap and the canonical URL all resolve correctly.

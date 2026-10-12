@@ -1,204 +1,215 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { GlassPanel } from "../ui/GlassPanel";
-import { Mail, MapPin, CheckCircle, AlertCircle } from "lucide-react";
-import { useState } from "react";
+import { AlertCircle, CheckCircle2, Mail, MapPin, Phone, Send } from "lucide-react";
+import { useActionState, useId } from "react";
+
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { Reveal } from "@/components/ui/Reveal";
+import { initialContactState, submitContact } from "@/app/actions/contact";
+import { profile } from "@/content/site";
+import { cn } from "@/lib/utils";
+
+const FIELD_CLASS =
+  "w-full rounded-xl border border-ink-ghost/60 bg-void px-4 py-3 font-sans text-sm text-ink " +
+  "placeholder:text-ink-faint/70 transition-colors focus:border-violet focus:outline-none " +
+  "focus-visible:outline-none aria-[invalid=true]:border-danger/70";
 
 export function ContactSection() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSent, setIsSent] = useState(false);
-  const [error, setError] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [state, formAction, pending] = useActionState(
+    submitContact,
+    initialContactState,
+  );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !email || !message) return;
+  /* Stable ids so every label is wired to its input. */
+  const uid = useId();
+  const nameId = `${uid}-name`;
+  const emailId = `${uid}-email`;
+  const messageId = `${uid}-message`;
 
-    setIsSubmitting(true);
-    setError("");
-
-    try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "286eab45-eaaa-4961-bdb7-edfa77038a72",
-          name,
-          email,
-          message,
-          subject: `Portfolio Contact: ${name}`,
-          from_name: name,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        setIsSent(true);
-        setName("");
-        setEmail("");
-        setMessage("");
-        setTimeout(() => setIsSent(false), 6000);
-      } else {
-        setError(data.message || "Something went wrong. Please try again.");
-      }
-    } catch {
-      setError("Network error. Please check your connection and try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const errors = state.fieldErrors ?? {};
 
   return (
-    <section id="contact" className="py-32 px-6 relative overflow-hidden">
-      {/* Top separator line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[1px] bg-gradient-to-r from-transparent via-[#818cf8]/30 to-transparent" />
+    <section id="contact" className="relative overflow-hidden px-5 py-section md:px-10">
+      <div className="aura -left-20 bottom-0 h-120 w-120 bg-indigo/15" aria-hidden />
+      <div className="aura -right-20 top-10 h-96 w-96 bg-cyan/10" aria-hidden />
 
-      {/* Mesh blobs */}
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full blur-[120px] opacity-10 pointer-events-none bg-[#818cf8]" />
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full blur-[100px] opacity-10 pointer-events-none bg-[#7bd0ff]" />
-
-      <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Left: Copy */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-col justify-center"
-          >
-            <h2 className="font-sans text-5xl md:text-7xl font-semibold tracking-tight leading-[1.1] mb-6">
-              Let&apos;s build <br />
-              <span className="text-[#e1e2e7]/50">something</span> <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#818cf8] to-[#7bd0ff]">
-                extraordinary.
-              </span>
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:gap-16">
+        {/* ---- Left: the pitch ---- */}
+        <div className="flex flex-col justify-center">
+          <Reveal from="left">
+            <h2 className="font-sans text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.04em] text-ink">
+              Let&apos;s build
+              <br />
+              <span className="text-ink-faint">something</span>
+              <br />
+              <span className="text-gradient">worth shipping.</span>
             </h2>
+          </Reveal>
 
-            <p className="font-sans text-lg text-[#e1e2e7]/60 leading-relaxed mb-12 max-w-md">
-              Currently accepting new projects and research collaborations.
-              Drop a line if you want to push the boundaries of what&apos;s
-              possible.
+          <Reveal from="left" delay={0.1}>
+            <p className="mt-7 max-w-md text-pretty font-sans text-lg font-light leading-relaxed text-ink-muted">
+              I&apos;m looking for SDE, full-stack and AI engineering roles, and
+              I&apos;m open to internships and collaborations. The fastest way
+              to reach me is email.
             </p>
+          </Reveal>
 
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-[rgba(15,19,29,0.4)] backdrop-blur-3xl border border-[rgba(255,255,255,0.06)] w-max">
-                <Mail className="text-[#bdc2ff] shrink-0" size={20} />
-                <span className="font-mono text-xs text-[#e1e2e7]/80 lowercase">
-                  ayushcarpenter181204@gmail.com
+          <Reveal from="left" delay={0.18}>
+            <ul className="mt-10 flex flex-col gap-3">
+              <li>
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="glass inline-flex w-full items-center gap-4 rounded-2xl p-4 transition-colors hover:border-hairline-strong hover:bg-glass-hover sm:w-auto"
+                >
+                  <Mail className="shrink-0 text-violet" size={18} />
+                  <span className="break-all font-mono text-xs lowercase text-ink">
+                    {profile.email}
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={profile.phoneHref}
+                  className="glass inline-flex w-full items-center gap-4 rounded-2xl p-4 transition-colors hover:border-hairline-strong hover:bg-glass-hover sm:w-auto"
+                >
+                  <Phone className="shrink-0 text-cyan" size={18} />
+                  <span className="font-mono text-xs text-ink">
+                    {profile.phone}
+                  </span>
+                </a>
+              </li>
+              <li className="glass inline-flex w-full items-center gap-4 rounded-2xl p-4 sm:w-auto">
+                <MapPin className="shrink-0 text-sand" size={18} />
+                <span className="label-mono text-ink-muted">
+                  {profile.location}
                 </span>
-              </div>
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-[rgba(15,19,29,0.4)] backdrop-blur-3xl border border-[rgba(255,255,255,0.06)] w-max">
-                <MapPin className="text-[#7bd0ff] shrink-0" size={20} />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[#e1e2e7]/80">
-                  India — Remote / Open to Relocation
-                </span>
-              </div>
-            </div>
-          </motion.div>
+              </li>
+            </ul>
+          </Reveal>
+        </div>
 
-          {/* Right: Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-          >
-            <GlassPanel className="p-8 md:p-12">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="font-mono text-[10px] uppercase tracking-widest text-[#e1e2e7]/50">
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="John Doe"
-                      className="bg-[#0B0F17] border border-[#454653] rounded-xl px-4 py-3 text-sm text-[#e1e2e7] placeholder:text-[#908f9e]/50 focus:outline-none focus:border-[#bdc2ff] focus:ring-1 focus:ring-[#818cf8]/30 transition-all"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="font-mono text-[10px] uppercase tracking-widest text-[#e1e2e7]/50">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="john@example.com"
-                      className="bg-[#0B0F17] border border-[#454653] rounded-xl px-4 py-3 text-sm text-[#e1e2e7] placeholder:text-[#908f9e]/50 focus:outline-none focus:border-[#bdc2ff] focus:ring-1 focus:ring-[#818cf8]/30 transition-all"
-                    />
-                  </div>
+        {/* ---- Right: the form ---- */}
+        <Reveal from="right">
+          <GlassPanel className="p-6 md:p-9">
+            <form action={formAction} className="flex flex-col gap-5">
+              {/* Honeypot — hidden from people, irresistible to bots. */}
+              <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+                <label htmlFor={`${uid}-company`}>Company</label>
+                <input
+                  id={`${uid}-company`}
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor={nameId} className="label-mono text-ink-muted">
+                    Full name
+                  </label>
+                  <input
+                    id={nameId}
+                    name="name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="Jane Doe"
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? `${nameId}-error` : undefined}
+                    className={FIELD_CLASS}
+                  />
+                  {errors.name && (
+                    <p id={`${nameId}-error`} className="font-mono text-[11px] text-danger">
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="font-mono text-[10px] uppercase tracking-widest text-[#e1e2e7]/50">
-                    Project Enquiry
+                  <label htmlFor={emailId} className="label-mono text-ink-muted">
+                    Email
                   </label>
-                  <textarea
+                  <input
+                    id={emailId}
+                    name="email"
+                    type="email"
                     required
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell me about your vision..."
-                    rows={5}
-                    className="bg-[#0B0F17] border border-[#454653] rounded-xl px-4 py-3 text-sm text-[#e1e2e7] placeholder:text-[#908f9e]/50 focus:outline-none focus:border-[#bdc2ff] focus:ring-1 focus:ring-[#818cf8]/30 transition-all resize-none"
+                    autoComplete="email"
+                    placeholder="jane@company.com"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? `${emailId}-error` : undefined}
+                    className={FIELD_CLASS}
                   />
-                </div>
-
-                {/* Error message */}
-                {error && (
-                  <div className="flex items-center gap-2 text-[#ffb4ab] font-mono text-xs">
-                    <AlertCircle size={14} />
-                    {error}
-                  </div>
-                )}
-
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting || isSent}
-                  whileHover={{ scale: isSubmitting || isSent ? 1 : 1.02 }}
-                  whileTap={{ scale: isSubmitting || isSent ? 1 : 0.98 }}
-                  className="mt-2 w-full bg-[#E5D5C5] text-[#05070A] font-mono text-xs uppercase tracking-[0.2em] py-4 rounded-full hover:bg-white transition-all duration-300 disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <svg
-                        className="animate-spin"
-                        width={14}
-                        height={14}
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <circle cx="12" cy="12" r="10" strokeOpacity={0.25} />
-                        <path d="M12 2a10 10 0 0 1 10 10" />
-                      </svg>
-                      Transmitting...
-                    </span>
-                  ) : isSent ? (
-                    <span className="flex items-center gap-2 text-green-800">
-                      <CheckCircle size={16} /> Message Sent!
-                    </span>
-                  ) : (
-                    "Transmit Message"
+                  {errors.email && (
+                    <p id={`${emailId}-error`} className="font-mono text-[11px] text-danger">
+                      {errors.email}
+                    </p>
                   )}
-                </motion.button>
-              </form>
-            </GlassPanel>
-          </motion.div>
-        </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor={messageId} className="label-mono text-ink-muted">
+                  Message
+                </label>
+                <textarea
+                  id={messageId}
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder="What are you building?"
+                  aria-invalid={Boolean(errors.message)}
+                  aria-describedby={errors.message ? `${messageId}-error` : undefined}
+                  className={cn(FIELD_CLASS, "resize-none")}
+                />
+                {errors.message && (
+                  <p id={`${messageId}-error`} className="font-mono text-[11px] text-danger">
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Status region — announced to screen readers when it changes. */}
+              <p
+                role="status"
+                aria-live="polite"
+                className={cn(
+                  "flex items-center gap-2 font-mono text-[11px]",
+                  state.status === "success" && "text-success",
+                  state.status === "error" && "text-danger",
+                  state.status === "idle" && "sr-only",
+                )}
+              >
+                {state.status === "success" && <CheckCircle2 size={14} />}
+                {state.status === "error" && <AlertCircle size={14} />}
+                {state.message}
+              </p>
+
+              <button
+                type="submit"
+                disabled={pending}
+                className="mt-1 inline-flex h-13 w-full items-center justify-center gap-2.5 rounded-full bg-ink font-mono text-[11px] uppercase tracking-[0.2em] text-void transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {pending ? (
+                  <>
+                    <span
+                      aria-hidden
+                      className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-void/25 border-t-void"
+                    />
+                    Sending
+                  </>
+                ) : (
+                  <>
+                    Send message
+                    <Send size={14} />
+                  </>
+                )}
+              </button>
+            </form>
+          </GlassPanel>
+        </Reveal>
       </div>
     </section>
   );

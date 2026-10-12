@@ -1,29 +1,35 @@
-"use client";
-
-import { cn } from "@/lib/utils";
-import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
 
-interface GlassPanelProps extends HTMLMotionProps<"div"> {
-  interactive?: boolean;
-  children: React.ReactNode;
-}
+import { cn } from "@/lib/utils";
 
-export const GlassPanel = React.forwardRef<HTMLDivElement, GlassPanelProps>(
-  ({ className, interactive = false, children, ...props }, ref) => {
-    return (
-      <motion.div
-        ref={ref}
-        className={cn(
-          "glass-panel rounded-2xl p-6 md:p-8",
-          interactive && "glass-panel-interactive cursor-pointer",
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </motion.div>
-    );
-  }
-);
-GlassPanel.displayName = "GlassPanel";
+type GlassPanelProps = React.ComponentPropsWithoutRef<"div"> & {
+  /** Adds the tier-3 hover treatment from the design spec. */
+  interactive?: boolean;
+};
+
+/**
+ * Tier 2 of the elevation model: a floating glass surface.
+ *
+ * Plain div rather than motion.div — wrap it in Reveal or Tilt3D when it
+ * needs to move, so panels that do not animate cost no JS.
+ */
+export function GlassPanel({
+  className,
+  interactive = false,
+  children,
+  ...props
+}: GlassPanelProps) {
+  return (
+    <div
+      className={cn(
+        "glass rounded-2xl p-6 md:p-8",
+        interactive &&
+          "transition-colors duration-300 hover:bg-glass-hover hover:border-hairline-strong",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}

@@ -1,24 +1,24 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { SideNav } from "@/components/layout/SideNav";
 import { Footer } from "@/components/layout/Footer";
-import { HeroSection } from "@/components/sections/HeroSection";
+import { Navbar } from "@/components/layout/Navbar";
+import { SideRail } from "@/components/layout/SideRail";
 import { AboutSection } from "@/components/sections/AboutSection";
-import { SkillsSection } from "@/components/sections/SkillsSection";
-import { ExperienceSection } from "@/components/sections/ExperienceSection";
-import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { ExperienceSection } from "@/components/sections/ExperienceSection";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
+import { SkillsSection } from "@/components/sections/SkillsSection";
 
 export default function Home() {
   return (
     <>
       <Navbar />
-      <SideNav />
-      <main className="flex-grow flex flex-col pt-0">
+      <SideRail />
+      <main id="main" className="flex grow flex-col">
         <HeroSection />
         <AboutSection />
+        <ProjectsSection />
         <SkillsSection />
         <ExperienceSection />
-        <ProjectsSection />
         <ContactSection />
       </main>
       <Footer />

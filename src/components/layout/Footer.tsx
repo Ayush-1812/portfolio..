@@ -1,40 +1,54 @@
-"use client";
+import { GithubIcon, LeetcodeIcon, LinkedinIcon } from "@/components/ui/Icons";
+import { profile, socials } from "@/content/site";
+
+const LINKS = [
+  { label: "GitHub", href: socials.github, Icon: GithubIcon },
+  { label: "LinkedIn", href: socials.linkedin, Icon: LinkedinIcon },
+  { label: "LeetCode", href: socials.leetcode, Icon: LeetcodeIcon },
+];
 
 export function Footer() {
   return (
-    <footer
-      className="py-12 text-center"
-      style={{
-        background: "#05070A",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-      }}
-    >
-      <div className="container mx-auto px-6 flex flex-col items-center gap-6">
-        <h2
-          className="font-sans font-bold text-3xl tracking-tighter"
-          style={{ color: "#e1e2e7" }}
-        >
-          AJ
-        </h2>
-        <p
-          className="font-mono text-xs uppercase"
-          style={{ color: "#908f9e", letterSpacing: "0.2em" }}
-        >
-          © {new Date().getFullYear()} Ayush Carpenter. Engineered with Precision.
-        </p>
-        <div className="flex items-center gap-6 font-mono text-[10px] uppercase" style={{ letterSpacing: "0.2em" }}>
-          {["Privacy Policy", "Terminal Access", "Source Code"].map((item) => (
+    <footer className="relative border-t border-hairline bg-void">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 py-14 md:flex-row md:justify-between md:py-16">
+        <div className="flex flex-col items-center gap-2 md:items-start">
+          <span className="font-sans text-2xl font-bold tracking-tighter text-ink">
+            {profile.shortName}
+            <span className="text-cyan">.</span>
+          </span>
+          <p className="label-mono text-ink-faint">
+            © {new Date().getFullYear()} {profile.name}
+          </p>
+        </div>
+
+        <nav aria-label="Elsewhere" className="flex items-center gap-2">
+          {LINKS.map(({ label, href, Icon }) => (
             <a
-              key={item}
-              href="#"
-              className="transition-colors"
-              style={{ color: "#454653" }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#e1e2e7")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "#454653")}
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${label} profile`}
+              className="grid h-11 w-11 place-items-center rounded-full border border-hairline text-ink-muted transition-colors duration-300 hover:border-hairline-strong hover:text-ink"
             >
-              {item}
+              <Icon size={18} />
             </a>
           ))}
+        </nav>
+
+        <div className="flex flex-col items-center gap-1 md:items-end">
+          <a
+            href={`mailto:${profile.email}`}
+            className="font-mono text-xs lowercase text-ink-muted transition-colors hover:text-ink"
+          >
+            {profile.email}
+          </a>
+          <a
+            href={profile.phoneHref}
+            className="font-mono text-xs text-ink-faint transition-colors hover:text-ink"
+          >
+            {profile.phone}
+          </a>
         </div>
       </div>
     </footer>

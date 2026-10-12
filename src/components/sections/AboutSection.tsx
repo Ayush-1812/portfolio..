@@ -1,131 +1,102 @@
-"use client";
+import { GraduationCap } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { GlassPanel } from "../ui/GlassPanel";
-import Image from "next/image";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { Reveal } from "@/components/ui/Reveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { coursework, education } from "@/content/site";
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-32 px-6">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Image Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[500px] lg:h-[600px] rounded-[2rem] overflow-hidden"
-            style={{
-              background: "rgba(15,19,29,0.4)",
-              backdropFilter: "blur(24px)",
-              border: "0.5px solid rgba(255,255,255,0.06)",
-            }}
-          >
-            <Image
-              src="/hero_image.jpg"
-              alt="Ayush Carpenter"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-top transition-all duration-700 grayscale hover:grayscale-0"
+    <section id="about" className="relative px-5 py-section md:px-10">
+      <div className="aura -right-40 top-20 h-120 w-120 bg-violet/10" aria-hidden />
+
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
+          {/* Narrative */}
+          <div className="lg:col-span-6">
+            <SectionHeading
+              eyebrow="About"
+              title={
+                <>
+                  I build the whole stack —{" "}
+                  <span className="text-gradient">and the parts underneath.</span>
+                </>
+              }
             />
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background: "linear-gradient(to top, #05070A 0%, transparent 40%)",
-              }}
-            />
-          </motion.div>
 
-          {/* Text Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-col gap-8"
-          >
-            <div>
-              <h2
-                className="font-sans text-4xl md:text-5xl lg:text-[56px] font-semibold leading-[1.1] mb-2"
-                style={{ color: "#e1e2e7", letterSpacing: "-0.02em" }}
-              >
-                Engineering the{" "}
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(135deg, #818cf8 0%, #7bd0ff 100%)",
-                  }}
-                >
-                  Digital Future
-                </span>
-              </h2>
+            <div className="mt-8 space-y-5">
+              <Reveal delay={0.05}>
+                <p className="text-pretty font-sans text-lg font-light leading-relaxed text-ink-muted">
+                  I&apos;m a Computer Science undergraduate at IIIT Kota. Most of
+                  what I build lives in the gap between a clean interface and the
+                  systems work that makes it trustworthy — a Go API that refuses
+                  an illegal move, a booking transaction that cannot double-sell
+                  a slot, an assistant that answers from real records instead of
+                  guessing.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.12}>
+                <p className="text-pretty font-sans text-lg font-light leading-relaxed text-ink-muted">
+                  Alongside coursework I keep my fundamentals sharp
+                  competitively: 550+ problems solved on LeetCode at a 1928
+                  Knight rating, 250+ on GeeksforGeeks, and a 3-star rating on
+                  CodeChef.
+                </p>
+              </Reveal>
             </div>
 
-            <div className="space-y-5">
-              <p
-                className="font-sans font-light text-lg leading-relaxed"
-                style={{ color: "#c6c5d5" }}
-              >
-                I specialize in building high-performance systems where AI meets
-                tangible software experiences. With a background in research and
-                full-stack engineering, I create tools that aren&apos;t just
-                functional, but cinematic in their execution.
+            {/* Coursework */}
+            <Reveal delay={0.18} className="mt-10">
+              <p className="label-mono text-ink-faint">Relevant coursework</p>
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {coursework.map((course) => (
+                  <li
+                    key={course}
+                    className="rounded-full border border-hairline bg-white/3 px-3 py-1.5 font-mono text-[11px] text-ink-muted"
+                  >
+                    {course}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          </div>
+
+          {/* Education */}
+          <div className="lg:col-span-6">
+            <Reveal from="right">
+              <p className="label-mono mb-5 flex items-center gap-3 text-cyan">
+                <GraduationCap size={14} />
+                Education
               </p>
-              <p
-                className="font-sans font-light text-lg leading-relaxed"
-                style={{ color: "#c6c5d5" }}
-              >
-                Currently pursuing B.Tech in Computer Science and Engineering at
-                the Indian Institute of Information Technology, Kota.
-              </p>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-2 gap-6 mt-4">
-              <GlassPanel className="p-5">
-                <p
-                  className="font-mono text-[10px] uppercase mb-2"
-                  style={{ color: "#7bd0ff", letterSpacing: "0.2em" }}
-                >
-                  Computer Science Research
-                </p>
-                <p
-                  className="font-sans text-sm font-medium"
-                  style={{ color: "#e1e2e7" }}
-                >
-                  B.Tech (CSE)
-                </p>
-                <p
-                  className="font-sans text-xs mt-1"
-                  style={{ color: "#908f9e" }}
-                >
-                  IIIT Kota, 2023 – Present
-                </p>
-              </GlassPanel>
-
-              <GlassPanel className="p-5">
-                <p
-                  className="font-mono text-[10px] uppercase mb-2"
-                  style={{ color: "#7bd0ff", letterSpacing: "0.2em" }}
-                >
-                  AI &amp; Cloud Architecture
-                </p>
-                <p
-                  className="font-sans text-sm font-medium"
-                  style={{ color: "#e1e2e7" }}
-                >
-                  Full-Stack Development
-                </p>
-                <p
-                  className="font-sans text-xs mt-1"
-                  style={{ color: "#908f9e" }}
-                >
-                  AI/ML &amp; Web Systems
-                </p>
-              </GlassPanel>
-            </div>
-          </motion.div>
+            <ol className="space-y-4">
+              {education.map((entry, index) => (
+                <Reveal key={entry.degree} from="right" delay={index * 0.08}>
+                  <GlassPanel
+                    interactive
+                    className="flex items-start justify-between gap-6 p-5 md:p-6"
+                  >
+                    <div className="min-w-0">
+                      <h3 className="font-sans text-base font-medium text-ink">
+                        {entry.degree}
+                      </h3>
+                      <p className="mt-1 text-sm text-ink-muted">
+                        {entry.institute}
+                      </p>
+                      <p className="label-mono mt-3 text-ink-faint">
+                        {entry.year}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-indigo/25 bg-indigo/10 px-3 py-1.5 font-mono text-xs text-violet">
+                      {entry.score}
+                    </span>
+                  </GlassPanel>
+                </Reveal>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
     </section>
