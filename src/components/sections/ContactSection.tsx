@@ -5,7 +5,7 @@ import { useActionState, useId } from "react";
 
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { Reveal } from "@/components/ui/Reveal";
-import { initialContactState, submitContact } from "@/app/actions/contact";
+import { initialContactState, submitContact } from "@/lib/contact";
 import { profile } from "@/content/site";
 import { cn } from "@/lib/utils";
 

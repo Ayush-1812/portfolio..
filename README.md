@@ -9,7 +9,7 @@ Dark-only, single page, built around a "Cinematic Cyber-Minimalist" design langu
 
 ```bash
 npm install
-cp .env.example .env.local   # then fill in WEB3FORMS_KEY
+cp .env.example .env.local   # then fill in NEXT_PUBLIC_WEB3FORMS_KEY
 npm run dev
 ```
 
@@ -26,7 +26,7 @@ Open http://localhost:3000.
 
 | Variable         | Required | Notes                                                                 |
 | ---------------- | -------- | --------------------------------------------------------------------- |
-| `WEB3FORMS_KEY`  | Yes      | Access key for the contact form. Read **server-side only**, inside the Server Action — deliberately not `NEXT_PUBLIC_`, so it never ships to the browser. Web3Forms delivers to the address the key was registered under, so create the key with the inbox you actually read. |
+| `NEXT_PUBLIC_WEB3FORMS_KEY` | Yes | Access key for the contact form. Web3Forms **rejects server-side requests on the free plan**, so the form posts from the browser and the key must be public — that is their design: a key is scoped to one inbox, rate-limited, and restrictable by domain. Delivery goes to whichever address the key was registered under and cannot be overridden from the request, so create the key with the inbox you actually read. |
 
 Without it the contact form renders and validates normally but returns a
 message asking the visitor to email directly, rather than failing silently.
@@ -38,7 +38,6 @@ is git-ignored and does not deploy.
 ```
 src/
 ├── app/
-│   ├── actions/contact.ts     Server Action: validation, honeypot, Web3Forms
 │   ├── layout.tsx             Fonts, metadata, JSON-LD Person schema, skip link
 │   ├── page.tsx               Section composition
 │   ├── globals.css            Design tokens (@theme) + utilities
@@ -46,6 +45,7 @@ src/
 │   ├── icon.tsx               Generated monogram favicon
 │   ├── sitemap.ts / robots.ts
 ├── content/site.ts            ← all copy and data live here
+├── lib/contact.ts             Contact form: validation, honeypot, Web3Forms
 ├── components/
 │   ├── layout/                Navbar, SideRail, Footer, ScrollProgress
 │   ├── sections/              Hero, About, Projects, Skills, Experience, Contact
@@ -105,6 +105,6 @@ scroll lock. Hover states are CSS, so they apply on keyboard focus too.
 ## Deploying
 
 Push to GitHub and import the repository on Vercel — the framework is detected
-automatically. Set `WEB3FORMS_KEY` in project settings, and update
+automatically. Set `NEXT_PUBLIC_WEB3FORMS_KEY` in project settings, and update
 `profile.siteUrl` in `src/content/site.ts` to the final domain so `metadataBase`,
 the sitemap and the canonical URL all resolve correctly.

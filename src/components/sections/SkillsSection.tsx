@@ -12,6 +12,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
 import { skillGroups, type SkillGroup } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 const ICONS: Record<SkillGroup["icon"], LucideIcon> = {
   code: Code2,

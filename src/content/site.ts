@@ -338,7 +338,7 @@ export const quickFacts = [
   { value: "1,050+", label: "DSA problems" },
   { value: "Knight", label: "1924 on LeetCode" },
   { value: "Top 7", label: "of 950+ teams" },
-  { value: "2027", label: "B.Tech CSE, IIIT Kota" },
+  { value: "2027", label: "Graduating" },
 ];
 
 export const navLinks = [
