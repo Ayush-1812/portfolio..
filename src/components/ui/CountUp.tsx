@@ -12,7 +12,7 @@ import { usePrefersReducedMotion } from "@/hooks/useEnvironment";
  * only counts the number between them. Anything with no number at all is
  * rendered untouched.
  */
-const PARSE = /^(\D*?)([\d,]+(?:\.\d+)?)(.*)$/s;
+const PARSE = /^(\D*?)([\d,]+(?:\.\d+)?)([\s\S]*)$/;
 
 export function CountUp({
   value,
@@ -36,16 +36,15 @@ export function CountUp({
     : 0;
   const grouped = rawNumber.includes(",");
 
+  /* Only the animated path needs state; everything else renders the final
+     value directly, so no effect ever has to write it. */
+  const animated = target !== null && !reducedMotion;
+
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState<number | null>(
-    target === null || reducedMotion ? target : 0,
-  );
+  const [progressValue, setProgressValue] = useState(0);
 
   useEffect(() => {
-    if (target === null || reducedMotion) {
-      setDisplay(target);
-      return;
-    }
+    if (!animated || target === null) return;
 
     const node = ref.current;
     if (!node) return;
@@ -63,7 +62,7 @@ export function CountUp({
           const t = Math.min((now - startedAt) / duration, 1);
           // easeOutExpo, matching the site's motion curve.
           const eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-          setDisplay(target * eased);
+          setProgressValue(target * eased);
           if (t < 1) frame = requestAnimationFrame(tick);
         };
 
@@ -77,13 +76,13 @@ export function CountUp({
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [target, duration, reducedMotion]);
+  }, [animated, target, duration]);
 
   if (target === null) {
     return <span className={className}>{value}</span>;
   }
 
-  const shown = display ?? 0;
+  const shown = animated ? progressValue : target;
   const formatted = grouped
     ? Math.round(shown).toLocaleString("en-US")
     : shown.toFixed(decimals);

@@ -1,6 +1,8 @@
 import { ArrowUpRight, Check, Users } from "lucide-react";
 
+import { CountUp } from "@/components/ui/CountUp";
 import { GithubIcon } from "@/components/ui/Icons";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
@@ -10,31 +12,35 @@ import { cn } from "@/lib/utils";
 /* Full class strings — Tailwind cannot see dynamically assembled names. */
 const ACCENT: Record<
   Project["accent"],
-  { text: string; chip: string; glow: string; rule: string }
+  { text: string; chip: string; glow: string; rule: string; dot: string }
 > = {
   indigo: {
     text: "text-indigo",
     chip: "border-indigo/25 bg-indigo/10 text-violet",
     glow: "bg-indigo/20",
     rule: "bg-indigo/40",
+    dot: "bg-indigo",
   },
   cyan: {
     text: "text-cyan",
     chip: "border-cyan/25 bg-cyan/10 text-cyan",
     glow: "bg-cyan/20",
     rule: "bg-cyan/40",
+    dot: "bg-cyan",
   },
   violet: {
     text: "text-violet",
     chip: "border-violet/25 bg-violet/10 text-violet",
     glow: "bg-violet/20",
     rule: "bg-violet/40",
+    dot: "bg-violet",
   },
   sand: {
     text: "text-sand",
     chip: "border-sand/25 bg-sand/10 text-sand",
     glow: "bg-sand/15",
     rule: "bg-sand/40",
+    dot: "bg-sand",
   },
 };
 
@@ -43,7 +49,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <Reveal delay={0.04} className="perspective">
-      <Tilt3D intensity={4} lift={10} className="rounded-[1.75rem]">
+      <Tilt3D intensity={4} lift={12} className="rounded-[1.75rem]">
         <article className="glass group relative overflow-hidden rounded-[1.75rem] transition-colors duration-500 hover:border-hairline-strong">
           {/* Accent bloom, strengthens on hover */}
           <div
@@ -55,19 +61,26 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           />
 
           <div className="relative grid gap-8 p-6 md:p-9 lg:grid-cols-12 lg:gap-10">
-            {/* ---- Left: identity + summary ---- */}
+            {/* ---- Left: identity, summary, links ---- */}
             <div className="lg:col-span-5">
               <div className="flex items-center gap-3">
                 <span className="label-mono text-ink-ghost">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className={cn("h-px w-6", accent.rule)} aria-hidden />
-                <span className="label-mono text-ink-faint">
-                  {project.live ? "Live" : "Source only"}
+                <span className="label-mono inline-flex items-center gap-1.5 text-ink-faint">
+                  <span
+                    aria-hidden
+                    className={cn("h-1.5 w-1.5 rounded-full", accent.dot)}
+                  />
+                  Live
                 </span>
               </div>
 
-              <h3 className="mt-5 font-sans text-3xl font-semibold tracking-tight text-ink md:text-4xl">
+              <h3
+                className="mt-5 font-sans text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+                style={{ transform: "translateZ(30px)" }}
+              >
                 {project.title}
               </h3>
               <p className={cn("label-mono mt-2.5", accent.text)}>
@@ -78,35 +91,59 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 {project.summary}
               </p>
 
+              {/* Quantified strip */}
+              <dl className="mt-7 flex flex-wrap gap-x-8 gap-y-4 border-t border-hairline pt-6">
+                {project.metrics.map((metric) => (
+                  <div key={metric.label}>
+                    <dt className="sr-only">{metric.label}</dt>
+                    <dd>
+                      <CountUp
+                        value={metric.value}
+                        className={cn(
+                          "block font-sans text-2xl font-semibold tracking-tight",
+                          accent.text,
+                        )}
+                      />
+                      <span className="label-mono mt-1.5 block text-ink-faint">
+                        {metric.label}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
               {project.note && (
-                <p className="mt-4 inline-flex items-center gap-2 rounded-lg border border-hairline bg-white/3 px-3 py-2 font-mono text-[11px] text-ink-faint">
+                <p className="mt-6 inline-flex items-center gap-2 rounded-lg border border-hairline bg-white/3 px-3 py-2 font-mono text-[11px] text-ink-faint">
                   <Users size={12} />
                   {project.note}
                 </p>
               )}
 
-              {/* Links */}
               <div className="mt-7 flex flex-wrap items-center gap-2.5">
                 {project.live && (
+                  <Magnetic strength={0.25}>
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex h-10 items-center gap-2 rounded-full bg-ink px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-void transition-colors hover:bg-white"
+                    >
+                      Live demo
+                      <ArrowUpRight size={14} />
+                    </a>
+                  </Magnetic>
+                )}
+                <Magnetic strength={0.25}>
                   <a
-                    href={project.live}
+                    href={project.repo}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="inline-flex h-10 items-center gap-2 rounded-full bg-ink px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-void transition-colors hover:bg-white"
+                    className="inline-flex h-10 items-center gap-2 rounded-full border border-hairline px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted transition-colors hover:border-hairline-strong hover:text-ink"
                   >
-                    Live demo
-                    <ArrowUpRight size={14} />
+                    <GithubIcon size={14} />
+                    Source
                   </a>
-                )}
-                <a
-                  href={project.repo}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="inline-flex h-10 items-center gap-2 rounded-full border border-hairline px-5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-muted transition-colors hover:border-hairline-strong hover:text-ink"
-                >
-                  <GithubIcon size={14} />
-                  Source
-                </a>
+                </Magnetic>
               </div>
             </div>
 
@@ -159,10 +196,11 @@ export function ProjectsSection() {
             eyebrow="Selected work"
             title={
               <>
-                Four systems, <span className="text-gradient">built end to end.</span>
+                Four systems,{" "}
+                <span className="text-gradient">built end to end.</span>
               </>
             }
-            description="Each one owns its own backend and data model — not a frontend sitting on someone else's API."
+            description="Each one owns its own backend and data model — not a frontend sitting on someone else's API. All four are deployed and playable right now."
           />
 
           <Reveal delay={0.1}>

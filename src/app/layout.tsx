@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 
-import { profile, socials } from "@/content/site";
+import { education, profile, socials } from "@/content/site";
 
 import "./globals.css";
 
@@ -19,7 +19,7 @@ const jetBrainsMono = JetBrains_Mono({
 
 const title = `${profile.name} — ${profile.role}`;
 const description =
-  "Computer Science undergraduate at IIIT Kota building full-stack systems end to end — realtime video consultation, AI assistants grounded in real data, and server-authoritative game APIs.";
+  "Computer Science undergraduate at IIIT Kota (2027) building full-stack systems end to end — WebRTC telemedicine, authoritative Go game servers, and AI assistants grounded in real records.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
@@ -37,8 +37,11 @@ export const metadata: Metadata = {
     "Full Stack Developer",
     "Next.js",
     "React",
+    "TypeScript",
     "Node.js",
     "Go",
+    "WebRTC",
+    "PostgreSQL",
     "IIIT Kota",
     "SDE",
     "Portfolio",
@@ -75,15 +78,25 @@ const jsonLd = {
   sameAs: [socials.github, socials.linkedin, socials.leetcode],
   alumniOf: {
     "@type": "CollegeOrUniversity",
-    name: "Indian Institute of Information Technology, Kota",
+    name: education.institute,
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kota",
+    addressRegion: "Rajasthan",
+    addressCountry: "IN",
   },
   knowsAbout: [
     "Full-stack web development",
     "React",
     "Next.js",
+    "TypeScript",
     "Node.js",
     "Go",
+    "WebRTC",
     "PostgreSQL",
+    "Redis",
+    "Docker",
     "Large language models",
   ],
 };

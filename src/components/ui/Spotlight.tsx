@@ -13,7 +13,11 @@ import { useHasFinePointer, usePrefersReducedMotion } from "@/hooks/useEnvironme
  */
 export function Spotlight() {
   const ref = useRef<HTMLDivElement>(null);
-  const enabled = useHasFinePointer() && !usePrefersReducedMotion();
+  // Both hooks must run every render — short-circuiting them would make
+  // the second call conditional.
+  const finePointer = useHasFinePointer();
+  const reducedMotion = usePrefersReducedMotion();
+  const enabled = finePointer && !reducedMotion;
 
   useEffect(() => {
     if (!enabled) return;

@@ -24,7 +24,11 @@ export function Magnetic({
   const x = useSpring(useMotionValue(0), { stiffness: 260, damping: 22, mass: 0.5 });
   const y = useSpring(useMotionValue(0), { stiffness: 260, damping: 22, mass: 0.5 });
 
-  const enabled = useHasFinePointer() && !usePrefersReducedMotion();
+  // Both hooks must run every render — short-circuiting them would make
+  // the second call conditional.
+  const finePointer = useHasFinePointer();
+  const reducedMotion = usePrefersReducedMotion();
+  const enabled = finePointer && !reducedMotion;
 
   const onPointerMove = useCallback(
     (event: React.PointerEvent<HTMLSpanElement>) => {

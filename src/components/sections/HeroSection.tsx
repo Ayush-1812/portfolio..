@@ -5,22 +5,18 @@ import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/Button";
+import { CountUp } from "@/components/ui/CountUp";
 import { HeroVisual } from "@/components/ui/HeroVisual";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { Tilt3D } from "@/components/ui/Tilt3D";
-import { profile, socials } from "@/content/site";
-
-/* Everything in this strip is verifiable from the resume. */
-const QUICK_FACTS = [
-  { value: "B.Tech CSE", label: "IIIT Kota" },
-  { value: "550+", label: "LeetCode solved" },
-  { value: "Knight", label: "1928 rating" },
-  { value: "Top 50", label: "of 950+ teams" },
-];
+import { profile, quickFacts, socials } from "@/content/site";
 
 const rise = {
   hidden: { opacity: 0, y: 24 },
   show: { opacity: 1, y: 0 },
 };
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HeroSection() {
   return (
@@ -44,7 +40,7 @@ export function HeroSection() {
         >
           <motion.span
             variants={rise}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/3 px-3.5 py-1.5 backdrop-blur-md"
           >
             <span className="relative flex h-1.5 w-1.5">
@@ -56,7 +52,7 @@ export function HeroSection() {
 
           <motion.h1
             variants={rise}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: EASE }}
             className="mt-7 font-sans text-[clamp(3rem,10vw,7rem)] font-semibold leading-[0.88] tracking-[-0.055em] text-ink"
           >
             Ayush
@@ -66,32 +62,36 @@ export function HeroSection() {
 
           <motion.p
             variants={rise}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="mt-7 max-w-xl text-pretty font-sans text-lg font-light leading-relaxed text-ink-muted"
           >
             {profile.role} · {profile.discipline}. I build full-stack systems
-            end to end — realtime video consultation, AI assistants grounded in
-            real records, and servers that own their own rules.
+            end to end — peer-to-peer video consultation, authoritative game
+            servers in Go, and AI assistants that answer from real records.
           </motion.p>
 
           <motion.div
             variants={rise}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="mt-10 flex flex-wrap items-center gap-3"
           >
-            <Button href="#work" size="lg">
-              View Work
-              <ArrowUpRight size={15} />
-            </Button>
-            <Button
-              href={profile.resumePath}
-              download={profile.resumeFileName}
-              variant="glass"
-              size="lg"
-            >
-              <Download size={15} />
-              Resume
-            </Button>
+            <Magnetic strength={0.3}>
+              <Button href="#work" size="lg">
+                View Work
+                <ArrowUpRight size={15} />
+              </Button>
+            </Magnetic>
+            <Magnetic strength={0.3}>
+              <Button
+                href={profile.resumePath}
+                download={profile.resumeFileName}
+                variant="glass"
+                size="lg"
+              >
+                <Download size={15} />
+                Resume
+              </Button>
+            </Magnetic>
             <Button
               href={socials.github}
               target="_blank"
@@ -106,15 +106,21 @@ export function HeroSection() {
           {/* Quick facts */}
           <motion.dl
             variants={rise}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="mt-14 grid max-w-2xl grid-cols-2 gap-x-6 gap-y-6 border-t border-hairline pt-8 sm:grid-cols-4"
           >
-            {QUICK_FACTS.map((fact) => (
+            {quickFacts.map((fact) => (
               <div key={fact.label}>
-                <dt className="font-sans text-xl font-semibold tracking-tight text-ink">
-                  {fact.value}
-                </dt>
-                <dd className="label-mono mt-1.5 text-ink-faint">{fact.label}</dd>
+                <dt className="sr-only">{fact.label}</dt>
+                <dd>
+                  <CountUp
+                    value={fact.value}
+                    className="block font-sans text-xl font-semibold tracking-tight text-ink"
+                  />
+                  <span className="label-mono mt-1.5 block text-ink-faint">
+                    {fact.label}
+                  </span>
+                </dd>
               </div>
             ))}
           </motion.dl>
@@ -122,7 +128,6 @@ export function HeroSection() {
 
         {/* ---------------- Portrait + 3D field ---------------- */}
         <div className="relative lg:col-span-5">
-          {/* The knot sits behind the portrait and overflows it on purpose. */}
           {/* Oversized on purpose: the knot has to read as a form orbiting
               the portrait, not as specks peeking out from behind it. */}
           <HeroVisual className="pointer-events-none absolute left-1/2 top-1/2 h-[210%] w-[210%] -translate-x-1/2 -translate-y-1/2" />
@@ -130,7 +135,7 @@ export function HeroSection() {
           <motion.div
             initial={{ opacity: 0, scale: 0.94, y: 28 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1, delay: 0.45, ease: EASE }}
             className="js-reveal perspective relative mx-auto w-full max-w-88"
           >
             <Tilt3D intensity={9} lift={20} className="rounded-[2rem]">
@@ -157,7 +162,7 @@ export function HeroSection() {
                 >
                   <p className="label-mono text-cyan">Currently</p>
                   <p className="mt-1.5 font-sans text-sm text-ink">
-                    B.Tech CSE · IIIT Kota
+                    B.Tech CSE · IIIT Kota · 2027
                   </p>
                 </div>
               </div>

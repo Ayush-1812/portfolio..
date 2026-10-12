@@ -20,6 +20,8 @@ export const initialContactState: ContactState = {
   message: "",
 };
 
+const CONTACT_EMAIL = "ayushcarpenter1812.work@gmail.com";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export async function submitContact(
@@ -53,10 +55,16 @@ export async function submitContact(
 
   const accessKey = process.env.WEB3FORMS_KEY;
   if (!accessKey) {
+    /* Surfaced to the visitor, so it names the fallback rather than just
+       failing. In development it also flags the missing variable. */
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "[contact] WEB3FORMS_KEY is not set — copy .env.example to .env.local and add your key.",
+      );
+    }
     return {
       status: "error",
-      message:
-        "The contact form is not configured right now. Please email me directly.",
+      message: `The form is not configured right now — please email ${CONTACT_EMAIL} directly.`,
     };
   }
 
@@ -82,7 +90,7 @@ export async function submitContact(
     if (!response.ok || !data.success) {
       return {
         status: "error",
-        message: data.message ?? "Something went wrong. Please try again.",
+        message: data.message ?? "Something went wrong — please try again, or email me directly.",
       };
     }
 

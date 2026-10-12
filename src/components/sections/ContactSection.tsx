@@ -49,8 +49,8 @@ export function ContactSection() {
           <Reveal from="left" delay={0.1}>
             <p className="mt-7 max-w-md text-pretty font-sans text-lg font-light leading-relaxed text-ink-muted">
               I&apos;m looking for SDE, full-stack and AI engineering roles, and
-              I&apos;m open to internships and collaborations. The fastest way
-              to reach me is email.
+              I&apos;m open to internships and collaborations. Messages sent
+              from this form land straight in my inbox.
             </p>
           </Reveal>
 
@@ -207,6 +207,17 @@ export function ContactSection() {
                   </>
                 )}
               </button>
+
+              {/* Escape hatch: if the form ever fails, nobody is stranded. */}
+              <p className="text-center font-mono text-[11px] text-ink-faint">
+                Prefer email?{" "}
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="text-ink-muted underline underline-offset-4 transition-colors hover:text-ink"
+                >
+                  {profile.email}
+                </a>
+              </p>
             </form>
           </GlassPanel>
         </Reveal>
