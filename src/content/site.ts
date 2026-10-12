@@ -2,7 +2,7 @@
  * Single source of truth for every piece of content on this site.
  *
  * Provenance rule: everything here comes from either
- *   (a) public/Ayush_Carpenter_ResumeSDE.pdf, or
+ *   (a) public/Ayush_Carpenter_Resume.pdf, or
  *   (b) the linked repository's own README.
  * Nothing is estimated, rounded or inferred. If a fact is not in one of those
  * two places it does not belong in this file.
@@ -12,14 +12,15 @@ export const profile = {
   name: "Ayush Carpenter",
   shortName: "AJ",
   role: "Software Engineer",
-  discipline: "MERN Stack & Next.js Developer",
-  email: "ayushcarpenter181204@gmail.com",
+  discipline: "Full-Stack & Realtime Systems",
+  email: "ayushcarpenter1812.work@gmail.com",
   phone: "+91 95875 67453",
   phoneHref: "tel:+919587567453",
-  location: "India — Remote / Open to Relocation",
-  resumePath: "/Ayush_Carpenter_ResumeSDE.pdf",
+  location: "Kota, Rajasthan — open to remote & relocation",
+  resumePath: "/Ayush_Carpenter_Resume.pdf",
   resumeFileName: "Ayush_Carpenter_Resume.pdf",
-  siteUrl: "https://ayushcarpenter.vercel.app",
+  /** The deployed address this resume links to as "Portfolio". */
+  siteUrl: "https://ayush-portfolio-three-gamma.vercel.app",
 } as const;
 
 export const socials = {
@@ -29,7 +30,7 @@ export const socials = {
 } as const;
 
 /* ------------------------------------------------------------------ */
-/* Projects                                                            */
+/* Projects — resume order                                             */
 /* ------------------------------------------------------------------ */
 
 export type Project = {
@@ -37,12 +38,12 @@ export type Project = {
   title: string;
   tagline: string;
   summary: string;
-  /** Drawn from each repository's own README. */
   highlights: string[];
+  /** Quantified facts rendered as a stat strip on each card. */
+  metrics: { value: string; label: string }[];
   stack: string[];
   repo: string;
   live?: string;
-  /** Shown as a note when the repository is not solely the owner's. */
   note?: string;
   accent: "indigo" | "cyan" | "violet" | "sand";
 };
@@ -51,29 +52,31 @@ export const projects: Project[] = [
   {
     slug: "medicare",
     title: "MediCare",
-    tagline: "Bringing healthcare to rural areas",
+    tagline: "Full-stack telemedicine platform",
     summary:
-      "A full-stack healthcare platform where patients book doctors, consult over video and keep their medical records in one place. The largest system here by surface area — realtime video, OCR, payments and an AI assistant grounded in actual patient records.",
+      "Booking, prescriptions, payments and peer-to-peer video consultation in one Dockerized system — with a Gemini health assistant wired into the live record set rather than guessing.",
     highlights: [
-      "Peer-to-peer WebRTC video consultation with screen share and fullscreen, gated by appointment-based access",
-      "Role-based auth for patient, doctor and admin using JWT sessions in httpOnly cookies",
-      "Slot-conflict-free booking — the reservation runs inside a database transaction",
-      "Prescription OCR with Tesseract.js, fuzzy-matched against a medicine list",
-      "Aether AI: a Gemini assistant with intent routing, tool-based retrieval over real records and conversation memory",
-      "Razorpay checkout verified server-side with HMAC-SHA256 signatures",
-      "Geolocation pharmacy search via SerpAPI, sorted by distance",
+      "JWT auth with role-based access control across 3 roles, built on 39 type-safe Server Actions and 6 Prisma models",
+      "Peer-to-peer video consultations over WebRTC, with a custom Node.js + Socket.IO signaling server handling SDP/ICE negotiation",
+      "Redis pub/sub synchronizes sessions across multiple server instances, so signaling survives horizontal scaling",
+      "Razorpay payment flow alongside appointment booking and digital prescription generation",
+      "A 7-tool Gemini health assistant operating over real patient records",
+    ],
+    metrics: [
+      { value: "39", label: "Server Actions" },
+      { value: "6", label: "Prisma models" },
+      { value: "3", label: "RBAC roles" },
     ],
     stack: [
       "Next.js 16",
       "React 19",
       "TypeScript",
       "WebRTC",
-      "PostgreSQL",
-      "Prisma",
       "Socket.IO",
       "Redis",
+      "PostgreSQL",
+      "Prisma",
       "Gemini API",
-      "Tesseract.js",
       "Razorpay",
       "Docker",
     ],
@@ -82,103 +85,91 @@ export const projects: Project[] = [
     accent: "cyan",
   },
   {
+    slug: "versionvista",
+    title: "VersionVista",
+    tagline: "Git repository visualizer",
+    summary:
+      "Replays a repository's history as an interactive timeline. Scrub through it and the file tree, diffs and commit graph reassemble themselves at that point in time — without blocking the UI.",
+    highlights: [
+      "Parses and indexes repository metadata with simple-git to replay commit history as an interactive timeline",
+      "File-level and line-level diffs with side-by-side comparison, handling 1,000+ commits without blocking the UI",
+      "Dashboard combining a commit tree, file explorer and code viewer",
+      "Caches repository data in MongoDB, reducing analysis time by approximately 60%",
+    ],
+    metrics: [
+      { value: "1,000+", label: "commits handled" },
+      { value: "~60%", label: "faster analysis" },
+    ],
+    stack: ["Next.js", "React.js", "MongoDB", "simple-git", "Tailwind CSS"],
+    repo: "https://github.com/prayag0one4/VersionVista",
+    live: "https://inquisitive-narwhal-2c09de.netlify.app/",
+    note: "Collaborative project — repository hosted on a teammate's account",
+    accent: "violet",
+  },
+  {
     slug: "cardplay",
     title: "CardPlay",
-    tagline: "A private card table for friends",
+    tagline: "Real-time multiplayer card games",
     summary:
-      "Built for live play and reliable reconnection. A Go API owns the rules so the client cannot cheat, and every match is written to PostgreSQL before a move is acknowledged — drop your connection mid-hand and the table is exactly where you left it.",
+      "Monopoly Deal and Trump, played live in the browser. A Go rules engine owns every decision so the client cannot cheat, and the table survives a restart or a dropped connection without losing a hand.",
     highlights: [
-      "Server-authoritative rules engine — the Go API validates every move",
-      "Matches persisted to PostgreSQL before a move is acknowledged, making reconnection lossless",
-      "Realtime transport over WebSockets with PostgreSQL LISTEN/NOTIFY for fan-out",
-      "Private rooms joinable as a guest or with a verified account",
-      "Monopoly Deal and Trump playable today; Cambio scaffolded, not yet playable",
-      "Covered end-to-end by Go tests and Playwright, wired into GitHub Actions",
+      "Authoritative Go rules engines behind one pluggable game interface, so a new game plugs into the same contract",
+      "Exactly-once WebSocket command processing, verified for 8 concurrent actions",
+      "Recovery without data loss, verified under restart and reconnect tests",
+      "89.7% test coverage with 46 end-to-end tests across 4 live player sessions",
     ],
-    stack: [
-      "Go 1.27",
-      "chi v5",
-      "WebSockets",
-      "PostgreSQL 18",
-      "sqlc",
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Docker Compose",
-      "Playwright",
-      "Caddy 2",
+    metrics: [
+      { value: "89.7%", label: "test coverage" },
+      { value: "46", label: "E2E tests" },
+      { value: "8", label: "concurrent actions" },
     ],
+    stack: ["Go", "PostgreSQL", "WebSockets", "Next.js", "TypeScript", "Docker"],
     repo: "https://github.com/Ayush-1812/CardPlay",
+    live: "https://card-play01.vercel.app/",
     accent: "sand",
   },
   {
     slug: "wealthwise",
     title: "WealthWise",
-    tagline: "AI-powered personal finance",
+    tagline: "AI personal-finance platform",
     summary:
-      "A full-stack platform for tracking income, expenses, budgets and financial goals — with Gemini reading your receipts and turning raw transaction history into recommendations you can act on.",
+      "Tracks income, expenses and budgets with Gemini reading the receipts — plus a Splitwise-style expense module that nets debts pairwise across a derived-balance ledger.",
     highlights: [
-      "AI-generated financial insights and recommendations over real spending history",
-      "Receipt scanning powered by Gemini vision",
-      "Interactive dashboard with visual spending analytics and reports",
-      "Automated recurring transactions and budget alerts via Inngest",
-      "Monthly financial summaries with automatic account balance calculation",
-      "Authentication handled by Clerk over a Supabase-hosted PostgreSQL database",
+      "Gemini receipt OCR feeding Recharts dashboards over a Prisma-backed PostgreSQL schema",
+      "Inngest-driven automated budget alerts and scheduled reports",
+      "Splitwise-style expense module with 6 split algorithms",
+      "Group and friend management with RBAC, pairwise debt netting and settlements",
+      "Derived-balance ledger spanning 10 tables",
+      "Authentication handled by Clerk",
+    ],
+    metrics: [
+      { value: "6", label: "split algorithms" },
+      { value: "10", label: "ledger tables" },
     ],
     stack: [
       "Next.js 15",
       "React 19",
-      "Prisma",
       "PostgreSQL",
-      "Supabase",
+      "Prisma",
       "Clerk",
       "Inngest",
       "Gemini API",
+      "Recharts",
       "Tailwind CSS",
-      "shadcn/ui",
     ],
     repo: "https://github.com/Ayush-1812/WelthWise",
     live: "https://welth-wise-nwr1-git-main-ayush-carpenters-projects.vercel.app/",
     accent: "indigo",
   },
-  {
-    slug: "versionvista",
-    title: "VersionVista",
-    tagline: "Visualizing GitHub code evolution",
-    summary:
-      "A high-density, timeline-driven Git visualization tool. Scrub a slider across a repository's history and watch the file tree, diffs and commit graph reassemble themselves at that point in time.",
-    highlights: [
-      "Interactive commit timeline you can scrub, play and pause through history",
-      "Historical file tree reflecting the repository's exact state at the selected commit",
-      "Line-by-line syntax-highlighted inline diff viewer",
-      "Local repository indexing — clones and snapshots repositories with simple-git",
-    ],
-    stack: [
-      "Next.js",
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "simple-git",
-      "Zustand",
-      "TanStack Query",
-      "Tailwind CSS",
-    ],
-    repo: "https://github.com/prayag0one4/VersionVista",
-    live: "https://versionvista.iamprayag.space",
-    note: "Collaborative project — repository hosted on a teammate's account",
-    accent: "violet",
-  },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Skills — resume groupings. The resume carries no proficiency scores, */
-/* so none are shown.                                                   */
+/* Skills — resume groupings, verbatim                                 */
 /* ------------------------------------------------------------------ */
 
 export type SkillGroup = {
   category: string;
-  icon: "code" | "server" | "brain" | "cloud" | "terminal" | "monitor";
+  icon: "code" | "server" | "database" | "cloud" | "monitor";
   items: string[];
 };
 
@@ -186,98 +177,144 @@ export const skillGroups: SkillGroup[] = [
   {
     category: "Languages",
     icon: "code",
-    items: ["C/C++", "Python", "JavaScript", "SQL", "Java"],
+    items: ["C++", "JavaScript", "TypeScript", "Go", "Python", "Java", "SQL"],
   },
   {
     category: "Frontend",
     icon: "monitor",
-    items: ["HTML", "CSS", "JavaScript", "React", "Next.js", "Tailwind CSS"],
+    items: [
+      "React.js",
+      "Next.js",
+      "HTML5",
+      "CSS3",
+      "Tailwind CSS",
+      "Redux",
+      "Zustand",
+      "React Query",
+      "Responsive Design",
+    ],
   },
   {
-    category: "Backend & Databases",
+    category: "Backend",
     icon: "server",
-    items: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "REST APIs", "FastAPI"],
+    items: [
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "WebRTC",
+      "Socket.IO",
+      "WebSockets",
+      "JWT Authentication",
+      "Microservices",
+    ],
   },
   {
-    category: "AI / ML & GenAI",
-    icon: "brain",
-    items: ["LLMs", "RAG", "Agentic AI", "OCR / NLP Workflows"],
+    category: "Databases & ORM",
+    icon: "database",
+    items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Prisma"],
   },
   {
-    category: "Cloud & DevOps",
+    category: "DevOps & Tools",
     icon: "cloud",
-    items: ["AWS", "Docker", "DevOps"],
-  },
-  {
-    category: "Tools & Version Control",
-    icon: "terminal",
-    items: ["VS Code", "Git", "GitHub", "Linux", "Windows"],
+    items: [
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Git",
+      "GitHub",
+      "GitHub Actions (CI/CD)",
+      "Linux",
+      "Postman",
+      "VS Code",
+    ],
   },
 ];
 
+export const coursework = [
+  "Data Structures & Algorithms",
+  "OOP",
+  "DBMS",
+  "Operating Systems",
+  "Computer Networks",
+  "System Design",
+];
+
 /* ------------------------------------------------------------------ */
-/* Experience, achievements, education                                 */
+/* Experience & education                                              */
 /* ------------------------------------------------------------------ */
 
-export type TimelineEntry = {
+export type Role = {
+  company: string;
   title: string;
-  org: string;
-  period?: string;
-  kind: "work" | "achievement";
+  location: string;
+  period: string;
+  bullets: string[];
 };
 
-export const timeline: TimelineEntry[] = [
+export const experience: Role[] = [
   {
+    company: "Gyanama",
     title: "Frontend Developer Intern",
-    org: "Gyanama",
-    period: "Feb 2023 – Jul 2023",
-    kind: "work",
-  },
-  {
-    title: "Top 50 of 950+ teams",
-    org: "Oddo Hackathon — IIT Gandhinagar",
-    kind: "achievement",
-  },
-  {
-    title: "State-level recognition",
-    org: "Badminton",
-    kind: "achievement",
+    location: "Remote",
+    period: "March 2025 – June 2025",
+    bullets: [
+      "Developed 15+ reusable, responsive UI components in React.js, Next.js and Tailwind CSS, adopted across 10 product pages and cutting duplicated UI code by 40% — establishing a shared component library for the team.",
+      "Collaborated with senior engineers on frontend architecture, state management and API data flow, standardizing 3+ new feature modules.",
+      "Integrated 8+ REST API endpoints using React Query for caching, loading and error states, reducing redundant network calls by 30%.",
+    ],
   },
 ];
 
-export const education = [
+export const education = {
+  institute: "Indian Institute of Information Technology, Kota",
+  location: "Kota, Rajasthan",
+  degree: "B.Tech in Computer Science and Engineering",
+  score: "CGPA 7.78 / 10",
+  period: "2023 – 2027 (Expected)",
+};
+
+/* ------------------------------------------------------------------ */
+/* Achievements                                                        */
+/* ------------------------------------------------------------------ */
+
+export type Achievement = {
+  title: string;
+  detail: string;
+  icon: "trophy" | "zap" | "braces";
+};
+
+export const achievements: Achievement[] = [
   {
-    degree: "B.Tech, Computer Science & Engineering",
-    institute: "Indian Institute of Information Technology, Kota",
-    score: "7.80 GPA",
-    year: "2023 – Present",
+    title: "Top 7 of 950+ teams",
+    detail: "Odoo Hackathon at IIT Gandhinagar — top 0.7%",
+    icon: "trophy",
   },
   {
-    degree: "Senior Secondary",
-    institute: "St. John's School, Jhalrapatan",
-    score: "92.4%",
+    title: "Top 500 of 32,000+",
+    detail: "LeetCode Biweekly Contest — top 1.6%",
+    icon: "zap",
   },
   {
-    degree: "Secondary",
-    institute: "St. John's School, Jhalrapatan",
-    score: "87%",
+    title: "1,050+ problems solved",
+    detail:
+      "Graphs, dynamic programming, trees, binary search and greedy algorithms",
+    icon: "braces",
   },
 ];
 
-/** Replaces the previous synthetic contribution graph. Every figure is on the resume. */
 export const codingProfiles = [
   {
     platform: "LeetCode",
-    metric: "550+",
-    metricLabel: "problems solved",
-    detail: "Knight Badge · 1928 rating",
+    metric: "850+",
+    metricLabel: "solved",
+    detail: "Knight · 1924 rating",
     href: socials.leetcode as string | undefined,
   },
   {
     platform: "GeeksforGeeks",
-    metric: "250+",
-    metricLabel: "problems solved",
-    detail: "Core DSA & competitive programming",
+    metric: "200+",
+    metricLabel: "solved",
+    detail: "Core DSA coverage",
     href: undefined as string | undefined,
   },
   {
@@ -287,17 +324,21 @@ export const codingProfiles = [
     detail: "Competitive programming",
     href: undefined as string | undefined,
   },
+  {
+    platform: "Codeforces",
+    metric: "1380",
+    metricLabel: "rating",
+    detail: "Pupil",
+    href: undefined as string | undefined,
+  },
 ];
 
-export const coursework = [
-  "Data Structures",
-  "Algorithms Analysis",
-  "Database Management",
-  "Operating Systems",
-  "Object Oriented Programming",
-  "Artificial Intelligence",
-  "Computer Architecture",
-  "Software Methodology",
+/** Headline facts for the hero strip. Every figure is on the resume. */
+export const quickFacts = [
+  { value: "1,050+", label: "DSA problems" },
+  { value: "Knight", label: "1924 on LeetCode" },
+  { value: "Top 7", label: "of 950+ teams" },
+  { value: "2027", label: "B.Tech CSE, IIIT Kota" },
 ];
 
 export const navLinks = [
