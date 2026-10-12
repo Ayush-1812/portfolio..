@@ -162,7 +162,7 @@ export function ProjectsSection() {
                 Four systems, <span className="text-gradient">built end to end.</span>
               </>
             }
-            description="Each one shipped with its own backend, data model and deployment — not a frontend over someone else's API."
+            description="Each one owns its own backend and data model — not a frontend sitting on someone else's API."
           />
 
           <Reveal delay={0.1}>

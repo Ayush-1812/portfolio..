@@ -71,7 +71,7 @@ export function HeroSection() {
           >
             {profile.role} · {profile.discipline}. I build full-stack systems
             end to end — realtime video consultation, AI assistants grounded in
-            real records, and APIs that hold their shape under load.
+            real records, and servers that own their own rules.
           </motion.p>
 
           <motion.div
