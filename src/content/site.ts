@@ -44,7 +44,6 @@ export type Project = {
   live?: string;
   /** Shown as a note when the repository is not solely the owner's. */
   note?: string;
-  year: string;
   accent: "indigo" | "cyan" | "violet" | "sand";
 };
 
@@ -80,7 +79,6 @@ export const projects: Project[] = [
     ],
     repo: "https://github.com/Ayush-1812/MediCare",
     live: "https://medi-care-2vbm.vercel.app/",
-    year: "2026",
     accent: "cyan",
   },
   {
@@ -111,7 +109,6 @@ export const projects: Project[] = [
       "Caddy 2",
     ],
     repo: "https://github.com/Ayush-1812/CardPlay",
-    year: "2026",
     accent: "sand",
   },
   {
@@ -142,7 +139,6 @@ export const projects: Project[] = [
     ],
     repo: "https://github.com/Ayush-1812/WelthWise",
     live: "https://welth-wise-nwr1-git-main-ayush-carpenters-projects.vercel.app/",
-    year: "2026",
     accent: "indigo",
   },
   {
@@ -171,7 +167,6 @@ export const projects: Project[] = [
     repo: "https://github.com/prayag0one4/VersionVista",
     live: "https://versionvista.iamprayag.space",
     note: "Collaborative project — repository hosted on a teammate's account",
-    year: "2025",
     accent: "violet",
   },
 ];
@@ -261,13 +256,11 @@ export const education = [
     degree: "Senior Secondary",
     institute: "St. John's School, Jhalrapatan",
     score: "92.4%",
-    year: "2022",
   },
   {
     degree: "Secondary",
     institute: "St. John's School, Jhalrapatan",
     score: "87%",
-    year: "2020",
   },
 ];
 

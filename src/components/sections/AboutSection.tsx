@@ -7,7 +7,9 @@ import { coursework, education } from "@/content/site";
 
 export function AboutSection() {
   return (
-    <section id="about" className="relative px-5 py-section md:px-10">
+    // overflow-clip, not hidden: it contains the decorative aura below
+    // without turning the section into a scroll container.
+    <section id="about" className="relative overflow-clip px-5 py-section md:px-10">
       <div className="aura -right-40 top-20 h-120 w-120 bg-violet/10" aria-hidden />
 
       <div className="relative z-10 mx-auto max-w-7xl">

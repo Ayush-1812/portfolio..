@@ -62,7 +62,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span className={cn("h-px w-6", accent.rule)} aria-hidden />
-                <span className="label-mono text-ink-faint">{project.year}</span>
+                <span className="label-mono text-ink-faint">
+                  {project.live ? "Live" : "Source only"}
+                </span>
               </div>
 
               <h3 className="mt-5 font-sans text-3xl font-semibold tracking-tight text-ink md:text-4xl">
