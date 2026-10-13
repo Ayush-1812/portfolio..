@@ -45,7 +45,7 @@ export type Project = {
   repo: string;
   live?: string;
   note?: string;
-  accent: "indigo" | "cyan" | "violet" | "sand";
+  accent: "indigo" | "cyan" | "violet" | "sand" | "mint";
 };
 
 export const projects: Project[] = [
@@ -54,18 +54,17 @@ export const projects: Project[] = [
     title: "MediCare",
     tagline: "Full-stack telemedicine platform",
     summary:
-      "Booking, prescriptions, payments and peer-to-peer video consultation in one Dockerized system — with a Gemini health assistant wired into the live record set rather than guessing.",
+      "Booking, prescriptions, payments and peer-to-peer video consultation in one Dockerized system — with signaling built to survive more than one server instance.",
     highlights: [
-      "JWT auth with role-based access control across 3 roles, built on 39 type-safe Server Actions and 6 Prisma models",
+      "JWT authentication with role-based access control across 3 roles — patient, doctor and admin",
       "Peer-to-peer video consultations over WebRTC, with a custom Node.js + Socket.IO signaling server handling SDP/ICE negotiation",
       "Redis pub/sub synchronizes sessions across multiple server instances, so signaling survives horizontal scaling",
-      "Razorpay payment flow alongside appointment booking and digital prescription generation",
-      "A 7-tool Gemini health assistant operating over real patient records",
+      "Appointment booking, prescriptions and consultation history in one record set",
+      "Razorpay payments and a Google Gemini API health assistant, containerized with Docker",
     ],
     metrics: [
-      { value: "39", label: "Server Actions" },
-      { value: "6", label: "Prisma models" },
       { value: "3", label: "RBAC roles" },
+      { value: "P2P", label: "WebRTC video" },
     ],
     stack: [
       "Next.js 16",
@@ -83,6 +82,37 @@ export const projects: Project[] = [
     repo: "https://github.com/Ayush-1812/MediCare",
     live: "https://medi-care-2vbm.vercel.app/",
     accent: "cyan",
+  },
+  {
+    slug: "threadforge",
+    title: "ThreadForge",
+    tagline: "C++20 multicore task scheduling runtime",
+    summary:
+      "A library, not a service. Applications hand it callables, get futures back and declare dependencies between tasks; idle workers steal ready work from their peers so an uneven load never leaves cores sitting idle.",
+    highlights: [
+      "Worker-local deques with rotating-victim work stealing, plus a global injection queue for external callers",
+      "Weighted High/Normal/Low priority scheduling with conditional 8:4:1 service",
+      "Dependency-aware fan-in/fan-out — a task waiting on prerequisites leaves the ready queues instead of occupying a worker",
+      "Exception-safe futures, graceful shutdown that drains accepted work, and per-worker metrics",
+      "Validated by 150 CTest checks, 100,000-task stress workloads and GCC/Clang sanitizer CI",
+      "54 Google Benchmark cases measured against sequential execution and a centralized thread pool",
+    ],
+    metrics: [
+      { value: "150", label: "CTest checks" },
+      { value: "54", label: "benchmark cases" },
+      { value: "100,000", label: "task stress runs" },
+    ],
+    stack: [
+      "C++20",
+      "CMake",
+      "GoogleTest",
+      "Google Benchmark",
+      "GitHub Actions",
+      "ASan / TSan",
+    ],
+    repo: "https://github.com/Ayush-1812/ThreadForge",
+    note: "A C++ library that runs inside an application — no deployment to demo",
+    accent: "mint",
   },
   {
     slug: "versionvista",
@@ -177,7 +207,7 @@ export const skillGroups: SkillGroup[] = [
   {
     category: "Languages",
     icon: "code",
-    items: ["C++", "JavaScript", "TypeScript", "Go", "Python", "Java", "SQL"],
+    items: ["C++", "JavaScript", "TypeScript", "Python", "Go", "SQL"],
   },
   {
     category: "Frontend",

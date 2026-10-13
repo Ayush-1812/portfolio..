@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check, Users } from "lucide-react";
+import { ArrowUpRight, Check, Info } from "lucide-react";
 
 import { CountUp } from "@/components/ui/CountUp";
 import { GithubIcon } from "@/components/ui/Icons";
@@ -42,7 +42,19 @@ const ACCENT: Record<
     rule: "bg-sand/40",
     dot: "bg-sand",
   },
+  mint: {
+    text: "text-mint",
+    chip: "border-mint/25 bg-mint/10 text-mint",
+    glow: "bg-mint/15",
+    rule: "bg-mint/40",
+    dot: "bg-mint",
+  },
 };
+
+/* Keeps the heading honest when a project is added or removed. */
+const COUNT_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven"];
+const PROJECT_COUNT_WORD =
+  COUNT_WORDS[projects.length] ?? String(projects.length);
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const accent = ACCENT[project.accent];
@@ -71,9 +83,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 <span className="label-mono inline-flex items-center gap-1.5 text-ink-faint">
                   <span
                     aria-hidden
-                    className={cn("h-1.5 w-1.5 rounded-full", accent.dot)}
+                    className={cn(
+                      "h-1.5 w-1.5 rounded-full",
+                      project.live ? accent.dot : "bg-ink-ghost",
+                    )}
                   />
-                  Live
+                  {project.live ? "Live" : "Library"}
                 </span>
               </div>
 
@@ -114,7 +129,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
               {project.note && (
                 <p className="mt-6 inline-flex items-center gap-2 rounded-lg border border-hairline bg-white/3 px-3 py-2 font-mono text-[11px] text-ink-faint">
-                  <Users size={12} />
+                  <Info size={12} />
                   {project.note}
                 </p>
               )}
@@ -196,11 +211,11 @@ export function ProjectsSection() {
             eyebrow="Selected work"
             title={
               <>
-                Four systems,{" "}
+                {PROJECT_COUNT_WORD} systems,{" "}
                 <span className="text-gradient">built end to end.</span>
               </>
             }
-            description="Each one owns its own backend and data model — not a frontend sitting on someone else's API. All four are deployed and playable right now."
+            description="Each one owns its own backend, data model or runtime — not a frontend sitting on someone else's API."
           />
 
           <Reveal delay={0.1}>
