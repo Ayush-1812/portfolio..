@@ -22,7 +22,7 @@ export function HeroSection() {
   return (
     <section
       id="top"
-      className="relative flex min-h-svh items-center overflow-hidden px-5 pb-20 pt-28 md:px-10 md:pt-32"
+      className="relative flex min-h-svh items-center overflow-hidden px-5 pb-20 pt-28 md:px-10 lg:pl-28 2xl:pl-10 md:pt-32"
     >
       {/* Ambient wash — stays visible whether or not WebGL loads. */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden>

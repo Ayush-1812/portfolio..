@@ -26,7 +26,7 @@ export function SkillsSection() {
   return (
     <section
       id="stack"
-      className="relative overflow-clip border-y border-hairline bg-surface px-5 py-section md:px-10"
+      className="relative overflow-clip border-y border-hairline bg-surface px-5 py-section md:px-10 lg:pl-28 2xl:pl-10"
     >
       {/* Faint technical grid */}
       <div

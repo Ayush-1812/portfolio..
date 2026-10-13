@@ -204,7 +204,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export function ProjectsSection() {
   return (
-    <section id="work" className="relative px-5 py-section md:px-10">
+    <section id="work" className="relative px-5 py-section md:px-10 lg:pl-28 2xl:pl-10">
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SectionHeading

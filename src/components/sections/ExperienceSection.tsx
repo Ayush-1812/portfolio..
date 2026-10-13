@@ -27,7 +27,7 @@ const ACHIEVEMENT_ICONS: Record<Achievement["icon"], LucideIcon> = {
 
 export function ExperienceSection() {
   return (
-    <section id="path" className="relative overflow-clip px-5 py-section md:px-10">
+    <section id="path" className="relative overflow-clip px-5 py-section md:px-10 lg:pl-28 2xl:pl-10">
       <div className="aura -left-40 top-40 h-120 w-120 bg-indigo/10" aria-hidden />
 
       <div className="relative z-10 mx-auto max-w-5xl">

@@ -10,7 +10,7 @@ const LINKS = [
 export function Footer() {
   return (
     <footer className="relative border-t border-hairline bg-void">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 py-14 md:flex-row md:justify-between md:py-16">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 py-14 lg:pl-28 2xl:pl-6 md:flex-row md:justify-between md:py-16">
         <div className="flex flex-col items-center gap-2 md:items-start">
           <span className="font-sans text-2xl font-bold tracking-tighter text-ink">
             {profile.shortName}

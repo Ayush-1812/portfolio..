@@ -29,7 +29,7 @@ export function ContactSection() {
   const errors = state.fieldErrors ?? {};
 
   return (
-    <section id="contact" className="relative overflow-hidden px-5 py-section md:px-10">
+    <section id="contact" className="relative overflow-hidden px-5 py-section md:px-10 lg:pl-28 2xl:pl-10">
       <div className="aura -left-20 bottom-0 h-120 w-120 bg-indigo/15" aria-hidden />
       <div className="aura -right-20 top-10 h-96 w-96 bg-cyan/10" aria-hidden />
 
